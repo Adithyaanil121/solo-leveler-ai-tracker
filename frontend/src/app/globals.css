@@ -1,0 +1,520 @@
+@import "tailwindcss";
+
+:root {
+  /* Solo Leveling Palette */
+  --bg-dark: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #334155;
+  --bg-surface: #1e293b;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-gold: #f59e0b;
+  --accent-emerald: #10b981;
+  --accent-orange: #f97316;
+  --accent-cyan: #06b6d4;
+  --danger: #ef4444;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-subtle: #1e293b;
+  --border-glow: rgba(139, 92, 246, 0.3);
+  --ring-acquired: #10b981;
+  --ring-working: #f97316;
+  --ring-planned: #06b6d4;
+
+  /* Shadows & Glows */
+  --glow-purple: 0 0 20px rgba(139, 92, 246, 0.25);
+  --glow-gold: 0 0 30px rgba(245, 158, 11, 0.4);
+  --glow-blue: 0 0 15px rgba(59, 130, 246, 0.2);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+
+  /* Typography */
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--bg-dark);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-body);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Background grid pattern */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ──── Mastery Ring ──── */
+.mastery-ring {
+  --ring-size: 80px;
+  width: var(--ring-size);
+  height: var(--ring-size);
+  position: relative;
+}
+
+.mastery-ring svg {
+  transform: rotate(-90deg);
+}
+
+.mastery-ring .ring-track {
+  fill: none;
+  stroke: var(--border-subtle);
+  stroke-width: 6;
+}
+
+.mastery-ring .ring-fill {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mastery-ring .ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+/* ──── Skill Card ──── */
+.skill-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.25rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent 40%, var(--border-glow) 100%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.skill-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--accent-purple);
+}
+
+.skill-card:hover::before {
+  opacity: 1;
+}
+
+/* ──── Level Badge ──── */
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.level-badge.orange {
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: var(--accent-orange) !important;
+  border: 1px solid rgba(249, 115, 22, 0.3) !important;
+}
+
+.level-badge.cyan {
+  background: rgba(6, 182, 212, 0.15) !important;
+  color: var(--accent-cyan) !important;
+  border: 1px solid rgba(6, 182, 212, 0.3) !important;
+}
+
+.level-badge.emerald {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: var(--accent-emerald) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+.level-badge.gold {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: var(--accent-gold) !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+/* ──── Difficulty Dots ──── */
+.difficulty-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.difficulty-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-subtle);
+}
+
+.difficulty-dot.filled {
+  background: var(--accent-gold);
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+}
+
+/* ──── Bucket Tabs ──── */
+.bucket-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+}
+
+.bucket-tab:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.bucket-tab.active {
+  color: var(--text-primary);
+  border-color: var(--border-glow);
+}
+
+.bucket-tab.active.acquired {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+}
+
+.bucket-tab.active.working-on {
+  background: rgba(249, 115, 22, 0.08);
+  border-color: rgba(249, 115, 22, 0.3);
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.1);
+}
+
+.bucket-tab.active.planned {
+  background: rgba(6, 182, 212, 0.08);
+  border-color: rgba(6, 182, 212, 0.3);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+}
+
+/* ──── Coach Chat ──── */
+.coach-bubble {
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-surface));
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px 16px 16px 4px;
+  padding: 1rem;
+}
+
+.user-bubble {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  border-radius: 16px 16px 4px 16px;
+  padding: 1rem;
+  color: white;
+}
+
+/* ──── Percentile Gauge ──── */
+.percentile-gauge {
+  position: relative;
+  width: 160px;
+  height: 80px;
+  overflow: hidden;
+}
+
+@keyframes flameSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-flame {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+/* ──── Flame Aura / Mana Energy Rings ──── */
+.flame-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.flame-layer-1,
+.flame-layer-2,
+.flame-layer-3 {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  mix-blend-mode: screen;
+}
+
+.flame-layer-1 {
+  inset: -20%;
+  border-top-color: var(--flame-color);
+  border-right-color: var(--flame-color);
+  filter: drop-shadow(0 0 10px var(--flame-color));
+  animation: flameSpin 3s linear infinite;
+}
+
+.flame-layer-2 {
+  inset: -15%;
+  border-bottom-color: var(--accent-purple);
+  border-left-color: var(--accent-cyan);
+  filter: drop-shadow(0 0 15px var(--accent-purple));
+  animation: flameSpin 4.5s linear infinite reverse;
+}
+
+.flame-layer-3 {
+  inset: -10%;
+  background: radial-gradient(circle, var(--flame-color) 0%, transparent 60%);
+  opacity: 0.3;
+  animation: pulse-flame 2s ease-in-out infinite alternate;
+}
+
+/* ──── Futuristic UI Borders ──── */
+.holo-border {
+  position: relative;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  /* Cyan trace */
+  box-shadow:
+    0 0 20px rgba(6, 182, 212, 0.15),
+    inset 0 0 30px rgba(139, 92, 246, 0.1);
+  background: #0a0e17;
+  background-image: linear-gradient(145deg, rgba(8, 12, 25, 0.95), rgba(15, 20, 40, 0.85));
+  /* Removed backdrop-filter to prevent stacking context collision with the borders */
+}
+
+.holo-border::before,
+.holo-border::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  pointer-events: none;
+  z-index: 5;
+  /* Keep corners on top */
+}
+
+.holo-border::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--accent-cyan);
+  border-left: 2px solid var(--accent-cyan);
+  box-shadow: -4px -4px 10px rgba(6, 182, 212, 0.5);
+}
+
+.holo-border::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid var(--accent-purple);
+  border-right: 2px solid var(--accent-purple);
+  box-shadow: 4px 4px 10px rgba(139, 92, 246, 0.5);
+}
+
+/* ──── Purple Flame/Neon Aura Borders ──── */
+@keyframes outerFieryGlow {
+  0% {
+    box-shadow:
+      0 0 10px rgba(147, 51, 234, 0.3),
+      0 0 20px rgba(192, 38, 211, 0.15);
+  }
+
+  50% {
+    box-shadow:
+      0 0 15px rgba(147, 51, 234, 0.5),
+      0 0 30px rgba(192, 38, 211, 0.3),
+      0 0 8px rgba(6, 182, 212, 0.2);
+  }
+
+  100% {
+    box-shadow:
+      0 0 10px rgba(147, 51, 234, 0.3),
+      0 0 20px rgba(192, 38, 211, 0.15);
+  }
+}
+
+.purple-flame-border {
+  /* Remove old masking rules and replace with a reliable outer glow */
+  animation: outerFieryGlow 3s ease-in-out infinite;
+  border: 1px solid rgba(147, 51, 234, 0.3);
+}
+
+.purple-flame-border:hover {
+  animation-duration: 2s;
+  border-color: rgba(147, 51, 234, 0.8);
+}
+
+/* ──── Atom Orbital Rings Effect ──── */
+@keyframes spinOrbitalX {
+  0% {
+    transform: rotateX(65deg) rotateY(0deg) rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateX(65deg) rotateY(0deg) rotateZ(360deg);
+  }
+}
+
+@keyframes spinOrbitalY {
+  0% {
+    transform: rotateX(0deg) rotateY(65deg) rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateX(0deg) rotateY(65deg) rotateZ(360deg);
+  }
+}
+
+@keyframes spinOrbitalZ {
+  0% {
+    transform: rotateX(45deg) rotateY(45deg) rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateX(45deg) rotateY(45deg) rotateZ(360deg);
+  }
+}
+
+.orbital-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  /* Overhang the card slightly */
+  height: 140%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.skill-card:hover .orbital-container {
+  opacity: 1;
+}
+
+/* Base ring structure */
+.orbital-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  box-shadow: inset 0 0 10px rgba(147, 51, 234, 0.1), 0 0 10px rgba(147, 51, 234, 0.1);
+  transform-style: preserve-3d;
+}
+
+/* The spinning "electron" attached to the ring */
+.orbital-ring::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent-cyan), 0 0 20px var(--accent-cyan);
+  transform: translateX(-50%);
+}
+
+.orbital-rx {
+  animation: spinOrbitalX 5s linear infinite;
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+.orbital-ry {
+  animation: spinOrbitalY 6s linear infinite;
+  border-color: rgba(147, 51, 234, 0.4);
+}
+
+.orbital-rz {
+  animation: spinOrbitalZ 7s linear infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s ease forwards;
+}
+
+.animate-level-up {
+  animation: levelUpFlash 1s ease;
+}
+
+.animate-pulsate {
+  animation: pulsateGlow 2s infinite;
+}
+
+.animate-mastery-delta {
+  animation: masteryDelta 1.5s ease forwards;
+}
+
+/* ──── Responsive ──── */
+@media (max-width: 768px) {
+  .mastery-ring {
+    --ring-size: 60px;
+  }
+
+  .skill-card {
+    padding: 1rem;
+  }
+}
